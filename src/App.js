@@ -1,4 +1,4 @@
-const { default: TaskManager } = require("./TaskManager")
+import TaskManager from "./TaskManager"
 
 let state = {
     taskManager: new TaskManager("Task Manager!")
