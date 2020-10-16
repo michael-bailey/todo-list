@@ -1,18 +1,17 @@
 {
-  "name": "test",
+  "name": "todo-list-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {
-    "apprun": "^2.24.0"
-  },
-  "devDependencies": {
-    "parcel-bundler": "^1.12.4",
-    "sass": "^1.27.0"
-  },
   "scripts": {
-    "start": "parcel ./index.html"
+    "start": "nodemon ./src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4"
+  }
 }
