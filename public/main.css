@@ -1,0 +1,66 @@
+.task {
+  height: 1cm;
+  padding: 1em;
+  border: 0;
+  margin: 0;
+  text-align: center;
+  color: black;
+}
+
+.crossout {
+  text-decoration: line-through;
+}
+.TaskManager {
+  display: grid;
+  grid-template-columns: 1cm 1fr 1fr 1cm;
+  grid-template-rows: 2cm auto 1cm 1cm;
+  grid-template-areas: ". task-header task-header ." ". list-table list-table ." ". new-item-form new-item-form ." ". remove-box tick-box .";
+  background-color: white;
+  width: 10cm;
+  max-width: 10cm;
+  height: 20cm;
+  padding: 1em;
+  border-color: black;
+  border-width: 1mm;
+  border-style: solid;
+  margin: 1cm;
+  color: black;
+}
+.TaskManager h1 {
+  grid-area: task-header;
+  text-align: center;
+}
+.TaskManager table {
+  width: 100%;
+}
+.TaskManager .table-wrapper {
+  display: table;
+  grid-area: list-table;
+  width: 100%;
+  max-height: 100%;
+  max-height: 600px;
+  overflow-y: scroll;
+  text-overflow: clip;
+  table-layout: fixed;
+  border-color: black;
+  border-width: 1mm;
+  border-style: solid;
+}
+.TaskManager .table-wrapper .header-row {
+  height: 1cm;
+  text-align: center;
+  color: black;
+}
+.TaskManager .newTaskForm {
+  grid-area: new-item-form;
+}
+.TaskManager .removeBox {
+  grid-area: remove-box;
+  height: 30px;
+  border: 3px solid #ff0000;
+}
+.TaskManager .tickBox {
+  grid-area: tick-box;
+  height: 30px;
+  border: 3px solid #00ff00;
+}
