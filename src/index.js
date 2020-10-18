@@ -30,7 +30,7 @@ app.route("/tasks")
     res.json(local_state.tasks)
 })
 .post(async (req, res) => {
-    
+
     console.log("POST at /tasks");
     console.log("^^^^^^^^^^^^^^^^^^^^");
     console.log(req.body);
@@ -43,21 +43,33 @@ app.route("/tasks/:task_id")
 .get(async (req, res) => {
     res.json(local_state.tasks.filter(item => item.id == req.params.task_id)[0])
 })
-.put(async (req, res) => {
-    let result = local_state.tasks.filter(item => item.id != req.params.id)
-    result.push(req.body) 
-    res.json(result)
+.patch(async (req, res) => {
+
+    console.log("body: ", req.body)
+
+    let id = req.body.id
+    let text = req.body.text
+    let done = req.body.done
+
+    let task = local_state.tasks.filter(i => i.id == req.params.task_id)[0]
+
+    console.log("task: ", task)
+
+    if (id) task.id = done
+    if (text) task.text = text
+    task.done = done
+
+    console.log("updated task: ", task)
+
+    res.json(local_state.tasks)
 })
 .delete(async (req, res) => {
-    local_state.tasks = local_state.tasks.filter(item => item.id == req.params.id)
-    req.json(local_state.tasks)
+    local_state.tasks = local_state.tasks.filter(item => item.id != req.params.task_id)
+    console.log(local_state.tasks)
+    res.json(local_state.tasks)
 })
 
 // setting the app to listen
 app.listen(3000, async () => {
     console.log("server started");
-    setInterval(async () => {
-        console.log("--------------------------");
-        console.log(local_state);
-    }, 2000)
 })
