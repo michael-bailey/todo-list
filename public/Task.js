@@ -1,5 +1,5 @@
 class Task {
-    id = window.crypto.getRandomValues(new Uint8Array(2)).join("")
+    id = window.crypto.getRandomValues(new Uint8Array(4)).join("")
     text = ""
     done = false
 
