@@ -8,32 +8,63 @@ class TaskManager {
         this.title = title
     }
 
-    addTask(text) {
-        this.tasks.push(new Task({text}))
+    async reload() {
+        try {
+            let data = await fetch('/tasks').then(res => res.json())
+            this.tasks = data.map(item => new Task(item))
+            console.log(this.tasks)
+        } catch (err) {
+            console.log(err)
+        }
+        return true
     }
 
-    addTasks(taskList) {
-        this.tasks.push(...taskList)
+    async addTask(text) {
+        let task = new Task({text})
+        let newtasks = await fetch("/tasks", {
+            body: JSON.stringify(task),
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        }).then(res => res.json())
+        this.tasks = newtasks.map(t => new Task(t))
+        console.log(this.tasks)
     }
 
-    setTasks(taskList) {
-        this.tasks = taskList
-    }
-
-    removeTask(id) {
-        this.tasks = this.tasks.filter(task => task.id != id)
+    async removeTask(id) {
+        let tasks = await fetch(`/tasks/${id}`, {
+            method: "DELETE",
+        }).then(res => res.json())
+        this.tasks = tasks.map(t => new Task(t));
     }
 
     findTask(id) {
         return this.tasks.filter(task => task.id == id)[0]
     }
 
-    tickTask(id) {
-        this.tasks.filter(task => task.id == id)[0].toggleDone()
-    }
+    async tickTask(id) {
+        let task = this.tasks.filter(i => i.id == id)[0]
 
-    clear() {
-        tasks = []
+        console.log("updating: ", task)
+
+        let data = {
+            done: !task.done
+        }
+
+        console.log("data: ", data)
+
+        let tasks = await fetch(`/tasks/${id}`, {
+            body: JSON.stringify(data),
+            method: "PATCH",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        }).then(res => res.json())
+
+        this.tasks = tasks.map(i => new Task(i))
     }
 
     render() {
