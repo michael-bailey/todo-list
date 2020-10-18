@@ -1,53 +1,26 @@
 
-
-let state = {
-    taskManager: new TaskManager("Task Manager!")
-}
+let state = new TaskManager("Task Manager!")
 
 let view = (state) => {
 
     return `
-        ${state.taskManager.render()}
+        ${state.render()}
     `
 }
 
 let update = {
     "init": async (state) => {
-        console.log("state is", state);
-        let data = await fetch('/tasks').then(res => res.json())
-        console.log("data is", data);
-
-        state.taskManager.addTasks(data.map(item => new Task(item)))
-
-        console.log(state);
-        
+        await state.reload()
         return state
     },
 
     "add": async (state, event, form) => {
-
         event.preventDefault()
-
-
-        console.log("added item");
 
         try {
             let formData = new FormData(form)
             let text = formData.get("text")
-
-            let id = state.taskManager.addTask(text);
-
-            let task = new Task({text})
-            console.log(task);
-
-            let data = await fetch('/tasks', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(task)
-            }).then(res => res.json())
-
+            await state.addTask(text);
         } catch (err) {
             console.log(err);
         }
@@ -55,61 +28,50 @@ let update = {
         return state
     },
 
-    "remove": (state, event, id) => {
+    "remove": async (state, event, id) => {
+        event.preventDefault()
 
-        console.log("removed item");
+        try {
+            await state.removeTask(id)
+        } catch (err) {
+            console.log(err);
+        }
+        return state
+    },
 
+    "tick": async (state, event, id) => {
         event.preventDefault()
         try {
-            state.taskManager.removeTask(id)
+            await state.tickTask(id)
         } catch (err) {
             console.log(err);
         }
-        return state
-    },
-
-    "tick": (state, event, id) => {
-        console.log("ticked item");
-        event.preventDefault()
-        let task = state.taskManager.findTask(id)
-
-        task.toggleDone()
         return state
     },
 
     "startTaskDrag": (state, event, id) => {
-        //event.preventDefault()
-
-        console.log("dragging ", id);
-
         event.dataTransfer.setData('taskID', id)
-
-
-        console.log(event);
-
         return state
     },
 
-    "stoppedTaskRemoveDrag": (state, event) => {
-        event.preventDefault()
+    "stoppedTaskRemoveDrag": async (state, event) => {
 
         let id = event.dataTransfer.getData('taskID')
 
         console.log("dropped ", id);
 
-        state.taskManager.removeTask(id)
+        await state.removeTask(id)
 
         return state
     },
 
-    "stoppedTaskTickDrag": (state, event) => {
-        event.preventDefault()
+    "stoppedTaskTickDrag": async (state, event) => {
 
         let id = event.dataTransfer.getData('taskID')
 
         console.log("dropped ", id);
 
-        state.taskManager.tickTask(id)
+        await state.tickTask(id)
 
         return state
     }
