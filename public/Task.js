@@ -10,10 +10,6 @@ class Task {
         this.text = text
     }
 
-    toggleDone() {
-        this.done = !this.done
-    }
-
     render() {
         return `
             <tr class="task${this.done ? ' crossout': ''}" draggable="true" ondragstart="app.run('startTaskDrag', event, ${this.id})">
