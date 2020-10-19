@@ -3,3 +3,16 @@
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.top-app-bar {
+  position: fixed;
+
+  top: 0;
+
+  width: 100vw;
+  height: 2cm;
+
+  box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+
+  background-color: white;
+}
