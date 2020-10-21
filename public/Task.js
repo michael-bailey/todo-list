@@ -12,13 +12,11 @@ class Task {
 
     render() {
         return `
-            <tr class="task${this.done ? ' crossout': ''}" draggable="true" ondragstart="app.run('startTaskDrag', event, ${this.id})">
-                <td>${this.text}</td>
-                <td>
-                    <button onclick="app.run('remove', event, ${this.id})">remove</button>
-                    <button onclick="app.run('tick', event, ${this.id})">done</button>
-                </td>
-            </tr>
+            <div>
+                <tr class="task${this.done ? ' crossout': ''}" draggable="true" ondragstart="app.run('startTaskDrag', event, ${this.id})">
+                    <td>${this.text}</td>
+                </tr>
+            </div>
         `
     }
 }

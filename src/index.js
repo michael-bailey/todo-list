@@ -31,10 +31,6 @@ app.route("/tasks")
 })
 .post(async (req, res) => {
 
-    console.log("POST at /tasks");
-    console.log("^^^^^^^^^^^^^^^^^^^^");
-    console.log(req.body);
-    console.log("^^^^^^^^^^^^^^^^^^^^");
     local_state.tasks.push(req.body)
     res.json(local_state.tasks)
 })
@@ -45,25 +41,20 @@ app.route("/tasks/:task_id")
 })
 .patch(async (req, res) => {
 
-    console.log("body: ", req.body)
-
     let id = req.body.id
     let text = req.body.text
     let done = req.body.done
 
     let task = local_state.tasks.filter(i => i.id == req.params.task_id)[0]
 
-    console.log("task: ", task)
-
     if (id) task.id = done
     if (text) task.text = text
     task.done = done
 
-    console.log("updated task: ", task)
-
     res.json(local_state.tasks)
 })
 .delete(async (req, res) => {
+    console.log("delete: ", req.params.task_id)
     local_state.tasks = local_state.tasks.filter(item => item.id != req.params.task_id)
     console.log(local_state.tasks)
     res.json(local_state.tasks)
